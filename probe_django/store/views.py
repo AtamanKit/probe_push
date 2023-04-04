@@ -27,8 +27,8 @@ def post_product(request):
     print(category_id)
     print(product)
 
-    models.Product(category_id=category_id, product=product)
-    models.Product.save()
+    product = models.Product(category_id=category_id, name=product)
+    product.save()
         
     return HttpResponse(output)
     
