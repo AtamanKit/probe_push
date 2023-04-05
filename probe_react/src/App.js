@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import AddProduct from './components/addProduct';
+import { apiUrl } from './components/utils';
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -15,7 +16,7 @@ function App() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/store/categories/');
+      const response = await axios.get(`${apiUrl()}/store/categories/`);
       setCategories(response.data);
     } catch (error) {
       console.error(error);
@@ -24,7 +25,7 @@ function App() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/store/products');
+      const response = await axios.get(`${apiUrl()}/store/products/`);
       setProducts(response.data);
     } catch (error) {
       console.error(error);

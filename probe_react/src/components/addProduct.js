@@ -19,6 +19,8 @@ import axios from 'axios';
 
 import { useEffect, useState } from 'react';
 
+import { apiUrl } from './utils';
+
 const theme = createTheme();
 
 export default function AddProduct() {
@@ -29,7 +31,7 @@ export default function AddProduct() {
     useEffect(() => {
         const fetchCategories = async() => {
             try {
-                const response = await axios.get('http://localhost:8000/api/store/categories/');
+                const response = await axios.get(`${apiUrl()}/store/categories/`);
                 setCategories(response.data);
                 // console.log(response.data);
             } catch (error) {
@@ -52,7 +54,7 @@ export default function AddProduct() {
             product: data.get('product'),
         }
 
-        axios.post('http://localhost:8000/api/store/postproduct/', productData)
+        axios.post(`${apiUrl()}/store/postproduct/`, productData)
             .then(response => console.log(response.status, response.data))
     };
 
