@@ -29,7 +29,7 @@ export default function AddProduct() {
     useEffect(() => {
         const fetchCategories = async() => {
             try {
-                const response = await axios.get('http://localhost:8000/store/categories/');
+                const response = await axios.get('http://localhost:8000/api/store/categories/');
                 setCategories(response.data);
                 // console.log(response.data);
             } catch (error) {
@@ -52,7 +52,7 @@ export default function AddProduct() {
             product: data.get('product'),
         }
 
-        axios.post('http://localhost:8000/store/postproduct/', productData)
+        axios.post('http://localhost:8000/api/store/postproduct/', productData)
             .then(response => console.log(response.status, response.data))
     };
 

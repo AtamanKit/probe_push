@@ -15,7 +15,7 @@ function App() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/store/categories/');
+      const response = await axios.get('http://localhost:8000/api/store/categories/');
       setCategories(response.data);
     } catch (error) {
       console.error(error);
@@ -24,7 +24,7 @@ function App() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/store/products');
+      const response = await axios.get('http://localhost:8000/api/store/products');
       setProducts(response.data);
     } catch (error) {
       console.error(error);
@@ -48,13 +48,14 @@ function App() {
                   textAlign: 'left',
                 }}
               >
-                <h2>{category.name}</h2>
+                <h3>{category.name}</h3>
                 {
                   products.map(product =>
                     <p
                       key={product.id}
                       style={{
-                        margin: '0 0 0 .5em'
+                        margin: '0 0 0 .5em',
+                        fontSize: '18px'
                       }}
                     >
                       {category.id === product.category_id ? product.name : ''}
