@@ -31,14 +31,14 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
+# CORS_ALLOW_METHODS = [
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# ]
 
 CORS_ALLOW_HEADERS = [
     "accept",
@@ -50,11 +50,23 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
+    "hx-request",
+    "hx-current-url",
+    "hx-target",
 ]
+
+# CSRF_COOKIE_DOMAIN = ['http://localhost:3000']
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
 ]
+
+# CSRF_USE_SESSIONS = False
+# CSFR_COOKIE_HTTPONLY = False
+# SESSION_COOKIE_SAMESITE = None
+# CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_DOMAIN = '.localhost'
+# SESSION_COOKIE_DOMAIN = '.localhost'
 
 # Application definition
 

@@ -1,21 +1,25 @@
 from django.http import HttpResponse
 from . import models
 import json
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
 
+# @ensure_csrf_cookie
 def get_products(request):
     products = models.Product.objects.all()
     queryset = json.dumps(list(products.values()))
 
     return HttpResponse(queryset)
 
+
+# @ensure_csrf_cookie
 def get_categories(request):
     categories = models.Category.objects.all()
     queryset = json.dumps(list(categories.values()))
 
     return HttpResponse(queryset)
 
-@csrf_exempt
+# @csrf_exempt
+# @ensure_csrf_cookie
 def post_product(request):
     output = json.dumps({'message': 'good'})
 
