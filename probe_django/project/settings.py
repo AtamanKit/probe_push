@@ -165,3 +165,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+    'WP_CLAIMS': {
+        'sub': 'mailto:rodionatamaniuc@gmail.com',
+    },
+    'WP_PRIVATE_KEY': 'private key',
+    'WP_PUBLIC_KEY': 'pubtlic key',
+    'WP_ADMIN_EMAIL': 'rodionatamaniuc@gmail.com',
+}
