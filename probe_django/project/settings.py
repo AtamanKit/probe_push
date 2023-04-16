@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -166,11 +168,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+VAPID_KEYS_DIR = os.path.expanduser('~/.ssh/probe_push/vapid/')
+
 PUSH_NOTIFICATIONS_SETTINGS = {
     'WP_CLAIMS': {
         'sub': 'mailto:rodionatamaniuc@gmail.com',
     },
-    'WP_PRIVATE_KEY': 'private key',
-    'WP_PUBLIC_KEY': 'pubtlic key',
+    'WP_PRIVATE_KEY': open(os.path.join(VAPID_KEYS_DIR, 'private_key.pem')).read(),
+    'WP_PUBLIC_KEY': open(os.path.join(VAPID_KEYS_DIR, 'public_key.pem')).read(),
     'WP_ADMIN_EMAIL': 'rodionatamaniuc@gmail.com',
 }

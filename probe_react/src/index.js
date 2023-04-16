@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import axios from 'axios';
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('/service-worker.js')
@@ -16,6 +18,10 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+var publicKey = null;
+axios.get('/home/ubuntu/.ssh/probe_push/vapid/public_key.pem')
+  .then(response => publicKey = response.data) 
+
 if ('Notification' in window && navigator.serviceWorker) {
   Notification.requestPermission(function(status) {
     console.log('Notification permission status:', status);
@@ -24,7 +30,7 @@ if ('Notification' in window && navigator.serviceWorker) {
       navigator.serviceWorker.ready.then(function(registration) {
         registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: 'YOUR_APPLICATION_SEVER_KEY'
+          applicationServerKey: publicKey
         })
         .then(function(subscription) {
             console.log('Push notification subscription:', subscription);
