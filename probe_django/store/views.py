@@ -1,32 +1,7 @@
 from django.http import HttpResponse
 from . import models
 import json
-# from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
-
-
-# Here is import for push notification
-from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from pywebpush import WebPushException, webpush
-from django.conf import settings
-from django.http import HttpResponseBadRequest
-from .models import PushSubscription
-
-
-# Class for notifications
-class SubscriptionView(APIView):
-    def post(self, request):
-        subscription_info = request.data
-
-        subscription = PushSubscription.objects.create(
-            endpoint=subscription_info['endpoint'],
-            p256dh=subscription_info['keys']['p256dh'],
-            auth=subscription_info['keys']['auth']
-        )
-        subscription.save()
-
-        return Response({'success': True})
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
 
 # @ensure_csrf_cookie
 def get_products(request):
@@ -43,7 +18,7 @@ def get_categories(request):
 
     return HttpResponse(queryset)
 
-# @csrf_exempt
+@csrf_exempt
 # @ensure_csrf_cookie
 def post_product(request):
     output = json.dumps({'message': 'good'})

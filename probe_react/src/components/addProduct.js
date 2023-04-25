@@ -23,8 +23,8 @@ import { apiUrl } from './utils';
 
 const theme = createTheme();
 
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+// axios.defaults.xsrfCookieName = 'csrftoken';
+// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export default function AddProduct() {
     const [categories, setCategories] = useState([]);
@@ -64,8 +64,6 @@ export default function AddProduct() {
     const handleChange = (event) => {
         setCategory(event.target.value)
     }
-
-    console.log(document.cookie);
 
     return(
         <ThemeProvider theme={theme}>

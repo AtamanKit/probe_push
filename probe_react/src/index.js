@@ -4,46 +4,73 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import axios from 'axios';
+// 'use strict'
+//============= Sript for Push Notification===========
+if (Notification.permission !== 'denied') {
+  const applicationServerPublicKey = 'BBuo4qNo5zoPFXSEYvR6rpXCHekRQanictIVef7op5dO4NRb2_6QgCuMEokfM9aEXHISFmvT_4WQjGoyuZtYsVs'
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(function(registration) {
-        console.log('ServiceWorker registration successful with scope:', registration.scope);
-      }, 
-      function(err) {
-        console.log('ServiceWorker registration failed:', err);
-      });
-  });
+  let swRegistration = null;
+  let isSubscribed = false;
+
+  function urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+    console.log('Service Worker and Push are supported');
+
+    navigator.serviceWorker.register('sw.js')
+    .then(swReg => {
+      console.log('Service Worker is registered', swReg);
+
+      swRegistration = swReg;
+      subscribeUser();
+      initializeUI();
+    })
+    .catch(error => console.error('Service Worker Error', error));
+  } else {
+    console.worn('Push messaging is not supported')
+  };
+
+  function subscribeUser() {
+    const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+    swRegistration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey
+    })
+    .then(() => {
+      isSubscribed = true;
+      initializeUI();
+    })
+    .catch(error => console.error('Failed to subscribe the user:', error))
+  }
+
+  function initializeUI() {
+    swRegistration.pushManager.getSubscription()
+    .then(subscription => {
+      isSubscribed = !(subscription === null);
+
+      if (isSubscribed) {
+        console.log('User IS subscribed');
+      } else {
+        console.log('User is NOT subscribed');
+      }
+    })
+  }
 }
 
-var publicKey = null;
-axios.get('/home/ubuntu/.ssh/probe_push/vapid/public_key.pem')
-  .then(response => publicKey = response.data) 
-
-if ('Notification' in window && navigator.serviceWorker) {
-  Notification.requestPermission(function(status) {
-    console.log('Notification permission status:', status);
-
-    if (status === 'granted') {
-      navigator.serviceWorker.ready.then(function(registration) {
-        registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: publicKey
-        })
-        .then(function(subscription) {
-            console.log('Push notification subscription:', subscription);
-        })
-        .catch(function(error) {
-            console.log('Push notification subscription error:', error);
-        });
-      });
-    };
-  });
-}
-
-
+//================= React script ===========================
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
