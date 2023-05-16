@@ -3,11 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { apiUrl } from './components/utils';
+import axios from 'axios';
 
 // 'use strict'
 //============= Sript for Push Notification===========
+
 if (Notification.permission !== 'denied') {
-  const applicationServerPublicKey = 'BBuo4qNo5zoPFXSEYvR6rpXCHekRQanictIVef7op5dO4NRb2_6QgCuMEokfM9aEXHISFmvT_4WQjGoyuZtYsVs'
+  fetch(`${apiUrl()}/store/publickey`, {
+    method: 'GET',
+  })
+  .then(res => res.json())
+  .then(result => localStorage.setItem('vapid_public_key', result.vapid_public_key))
+  .catch(error => console.log(error))
+
+  const applicationServerPublicKey = localStorage.getItem('vapid_public_key')
 
   let swRegistration = null;
   let isSubscribed = false;
@@ -49,7 +59,9 @@ if (Notification.permission !== 'denied') {
       userVisibleOnly: true,
       applicationServerKey: applicationServerKey
     })
-    .then(() => {
+    .then(subscription => {
+      localStorage.setItem('subToken', JSON.stringify(subscription));
+
       isSubscribed = true;
       initializeUI();
     })
@@ -63,6 +75,7 @@ if (Notification.permission !== 'denied') {
 
       if (isSubscribed) {
         console.log('User IS subscribed');
+
       } else {
         console.log('User is NOT subscribed');
       }

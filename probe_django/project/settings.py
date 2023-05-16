@@ -168,13 +168,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-VAPID_KEYS_DIR = os.path.expanduser('~/.ssh/probe_push/vapid/')
+DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH = os.path.join(BASE_DIR, 'private_key.txt')
+DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH = os.path.join(BASE_DIR, 'public_key.txt')
 
-PUSH_NOTIFICATIONS_SETTINGS = {
-    'WP_CLAIMS': {
-        'sub': 'mailto:rodionatamaniuc@gmail.com',
-    },
-    'WP_PRIVATE_KEY': open(os.path.join(VAPID_KEYS_DIR, 'private_key.pem')).read(),
-    'WP_PUBLIC_KEY': open(os.path.join(VAPID_KEYS_DIR, 'public_key.pem')).read(),
-    'WP_ADMIN_EMAIL': 'rodionatamaniuc@gmail.com',
+VAPID_PRIVATE_KEY = open(DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH, 'r+').readline().strip("\n")
+VAPID_PUBLIC_KEY = open(DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH, 'r+').read().strip("\n")
+
+WEBPUSH_SETTINGS = {
+    'VAPID_PRIVATE_KEY': VAPID_PRIVATE_KEY,
+    'VAPID_PUBLIC_KEY': VAPID_PUBLIC_KEY,
+    'VAPID_ADMIN_EMAIL': 'rodionatamaniuc@gmail.com'
 }

@@ -46,7 +46,7 @@ export default function AddProduct() {
     }, [])
 
     const handleSubmit = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         const data = new FormData(event.currentTarget);
         // console.log({
         //     category: category,
@@ -58,6 +58,14 @@ export default function AddProduct() {
         }
 
         axios.post(`${apiUrl()}/store/postproduct/`, productData)
+            .then(response => console.log(response.status, response.data))
+
+        
+        const subInfo = localStorage.getItem('subToken');
+
+        // console.log(typeof(JSON.stringify(subInfo)));
+
+        axios.post(`${apiUrl()}/store/pushnotif/`, subInfo)
             .then(response => console.log(response.status, response.data))
     };
 
